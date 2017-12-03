@@ -1,2 +1,430 @@
 <!DOCTYPE html>
-<html lang="en"><head><title>leasot report</title></head><body style="display:flex;justify-content:center"><link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/><link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css"/><script defer="" src="https://code.getmdl.io/1.3.0/material.min.js"></script><div><h3><a href="./../../index.html">Leasot Report</a></h3><h4>example/testDir/index_001.js</h4><hr/><div style="width:60rem;border:1px solid #DEDEDF"><table style="text-align:left;width:100%;border:none;background-color:#FFF;border-collapse:collapse;border-spacing:0"><tbody><tr style="margin:0px;padding:0px;background-color:#FFC0CB;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#FFC0CB;padding-left:30px;color:#A29999">1</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L1"><pre style="margin:0px;padding:0px;border:none"><code><span>// @flow</span></code></pre></td></tr><tr style="margin:0px;padding:0px;background-color:#FFC0CB;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#FFC0CB;padding-left:30px;color:#A29999">2</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L2"><pre style="margin:0px;padding:0px;border:none"><code><span>import React, { type Node } from &quot;react&quot;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">3</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L3"><pre style="margin:0px;padding:0px;border:none"><code><span>import Row, { type Props as RowProps } from &quot;./Row&quot;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">4</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L4"><pre style="margin:0px;padding:0px;border:none"><code><span></span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">5</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L5"><pre style="margin:0px;padding:0px;border:none"><code><span>export type Props = {</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">6</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L6"><pre style="margin:0px;padding:0px;border:none"><code><span>  fileName: number,</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">7</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L7"><pre style="margin:0px;padding:0px;border:none"><code><span>  codes: Array&lt;RowProps&gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">8</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L8"><pre style="margin:0px;padding:0px;border:none"><code><span>}</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">9</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L9"><pre style="margin:0px;padding:0px;border:none"><code><span></span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">10</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L10"><pre style="margin:0px;padding:0px;border:none"><code><span>const style = {</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">11</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L11"><pre style="margin:0px;padding:0px;border:none"><code><span>  margin: &quot;0px&quot;,</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">12</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L12"><pre style="margin:0px;padding:0px;border:none"><code><span>  padding: &quot;0px&quot;,</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">13</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L13"><pre style="margin:0px;padding:0px;border:none"><code><span>  border: &quot;none&quot;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">14</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L14"><pre style="margin:0px;padding:0px;border:none"><code><span>}</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">15</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L15"><pre style="margin:0px;padding:0px;border:none"><code><span></span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">16</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L16"><pre style="margin:0px;padding:0px;border:none"><code><span>// TODO : foo</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">17</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L17"><pre style="margin:0px;padding:0px;border:none"><code><span>export default ({ fileName, codes }: Props) =&gt; (</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">18</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L18"><pre style="margin:0px;padding:0px;border:none"><code><span>  &lt;div&gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">19</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L19"><pre style="margin:0px;padding:0px;border:none"><code><span>    &lt;h3&gt;Leasot Report&lt;/h3&gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">20</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L20"><pre style="margin:0px;padding:0px;border:none"><code><span>    &lt;h4&gt;{fileName}&lt;/h4&gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">21</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L21"><pre style="margin:0px;padding:0px;border:none"><code><span>    &lt;div style={{ width: &quot;60rem&quot;, border: &quot;1px solid #DEDEDF&quot; }}&gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">22</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L22"><pre style="margin:0px;padding:0px;border:none"><code><span>      &lt;table</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">23</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L23"><pre style="margin:0px;padding:0px;border:none"><code><span>        style={{</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">24</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L24"><pre style="margin:0px;padding:0px;border:none"><code><span>          textAlign: &quot;left&quot;,</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">25</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L25"><pre style="margin:0px;padding:0px;border:none"><code><span>          width: &quot;100%&quot;,</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">26</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L26"><pre style="margin:0px;padding:0px;border:none"><code><span>          border: &quot;none&quot;,</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">27</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L27"><pre style="margin:0px;padding:0px;border:none"><code><span>          backgroundColor: &quot;#FFF&quot;,</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">28</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L28"><pre style="margin:0px;padding:0px;border:none"><code><span>          borderCollapse: &quot;collapse&quot;,</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">29</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L29"><pre style="margin:0px;padding:0px;border:none"><code><span>          borderSpacing: 0</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">30</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L30"><pre style="margin:0px;padding:0px;border:none"><code><span>        }}</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">31</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L31"><pre style="margin:0px;padding:0px;border:none"><code><span>      &gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">32</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L32"><pre style="margin:0px;padding:0px;border:none"><code><span>        &lt;tbody&gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">33</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L33"><pre style="margin:0px;padding:0px;border:none"><code><span>          {codes.map(({ line, code, todo }) =&gt; (</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">34</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L34"><pre style="margin:0px;padding:0px;border:none"><code><span>            &lt;Row key={line} line={line} code={code} todo={todo} /&gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">35</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L35"><pre style="margin:0px;padding:0px;border:none"><code><span>          ))}</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">36</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L36"><pre style="margin:0px;padding:0px;border:none"><code><span>        &lt;/tbody&gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">37</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L37"><pre style="margin:0px;padding:0px;border:none"><code><span>      &lt;/table&gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">38</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L38"><pre style="margin:0px;padding:0px;border:none"><code><span>    &lt;/div&gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">39</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L39"><pre style="margin:0px;padding:0px;border:none"><code><span>  &lt;/div&gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">40</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L40"><pre style="margin:0px;padding:0px;border:none"><code><span>)</span></code></pre></td></tr></tbody></table></div><div style="margin-top:30px;margin-bottom:15px;color:#212121;display:flex;justify-content:center">Leasot Report generated by <a href="https://github.com/pgilad/leasot" target="_blank" rel="noopener noreferrer">leasot</a> and <a href="https://github.com/wheatandcat/leasot-report" target="_blank" rel="noopener noreferrer">leasot-report</a></div></div></body></html>
+<style>.MuiPaper-root-8 {
+  background-color: #fff;
+}
+.MuiPaper-rounded-9 {
+  border-radius: 2px;
+}
+.MuiPaper-shadow0-10 {
+  box-shadow: none;
+}
+.MuiPaper-shadow1-11 {
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2),0px 1px 1px 0px rgba(0, 0, 0, 0.14),0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow2-12 {
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2),0px 2px 2px 0px rgba(0, 0, 0, 0.14),0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow3-13 {
+  box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.2),0px 3px 4px 0px rgba(0, 0, 0, 0.14),0px 3px 3px -2px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow4-14 {
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),0px 4px 5px 0px rgba(0, 0, 0, 0.14),0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow5-15 {
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),0px 5px 8px 0px rgba(0, 0, 0, 0.14),0px 1px 14px 0px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow6-16 {
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),0px 6px 10px 0px rgba(0, 0, 0, 0.14),0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow7-17 {
+  box-shadow: 0px 4px 5px -2px rgba(0, 0, 0, 0.2),0px 7px 10px 1px rgba(0, 0, 0, 0.14),0px 2px 16px 1px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow8-18 {
+  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),0px 8px 10px 1px rgba(0, 0, 0, 0.14),0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow9-19 {
+  box-shadow: 0px 5px 6px -3px rgba(0, 0, 0, 0.2),0px 9px 12px 1px rgba(0, 0, 0, 0.14),0px 3px 16px 2px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow10-20 {
+  box-shadow: 0px 6px 6px -3px rgba(0, 0, 0, 0.2),0px 10px 14px 1px rgba(0, 0, 0, 0.14),0px 4px 18px 3px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow11-21 {
+  box-shadow: 0px 6px 7px -4px rgba(0, 0, 0, 0.2),0px 11px 15px 1px rgba(0, 0, 0, 0.14),0px 4px 20px 3px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow12-22 {
+  box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2),0px 12px 17px 2px rgba(0, 0, 0, 0.14),0px 5px 22px 4px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow13-23 {
+  box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2),0px 13px 19px 2px rgba(0, 0, 0, 0.14),0px 5px 24px 4px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow14-24 {
+  box-shadow: 0px 7px 9px -4px rgba(0, 0, 0, 0.2),0px 14px 21px 2px rgba(0, 0, 0, 0.14),0px 5px 26px 4px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow15-25 {
+  box-shadow: 0px 8px 9px -5px rgba(0, 0, 0, 0.2),0px 15px 22px 2px rgba(0, 0, 0, 0.14),0px 6px 28px 5px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow16-26 {
+  box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2),0px 16px 24px 2px rgba(0, 0, 0, 0.14),0px 6px 30px 5px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow17-27 {
+  box-shadow: 0px 8px 11px -5px rgba(0, 0, 0, 0.2),0px 17px 26px 2px rgba(0, 0, 0, 0.14),0px 6px 32px 5px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow18-28 {
+  box-shadow: 0px 9px 11px -5px rgba(0, 0, 0, 0.2),0px 18px 28px 2px rgba(0, 0, 0, 0.14),0px 7px 34px 6px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow19-29 {
+  box-shadow: 0px 9px 12px -6px rgba(0, 0, 0, 0.2),0px 19px 29px 2px rgba(0, 0, 0, 0.14),0px 7px 36px 6px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow20-30 {
+  box-shadow: 0px 10px 13px -6px rgba(0, 0, 0, 0.2),0px 20px 31px 3px rgba(0, 0, 0, 0.14),0px 8px 38px 7px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow21-31 {
+  box-shadow: 0px 10px 13px -6px rgba(0, 0, 0, 0.2),0px 21px 33px 3px rgba(0, 0, 0, 0.14),0px 8px 40px 7px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow22-32 {
+  box-shadow: 0px 10px 14px -6px rgba(0, 0, 0, 0.2),0px 22px 35px 3px rgba(0, 0, 0, 0.14),0px 8px 42px 7px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow23-33 {
+  box-shadow: 0px 11px 14px -7px rgba(0, 0, 0, 0.2),0px 23px 36px 3px rgba(0, 0, 0, 0.14),0px 9px 44px 8px rgba(0, 0, 0, 0.12);
+}
+.MuiPaper-shadow24-34 {
+  box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2),0px 24px 38px 3px rgba(0, 0, 0, 0.14),0px 9px 46px 8px rgba(0, 0, 0, 0.12);
+}
+.MuiAppBar-root-1 {
+  width: 100%;
+  display: flex;
+  z-index: 1100;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  flex-direction: column;
+}
+.MuiAppBar-positionFixed-2 {
+  top: 0;
+  left: auto;
+  right: 0;
+  position: fixed;
+}
+.MuiAppBar-positionAbsolute-3 {
+  top: 0;
+  left: auto;
+  right: 0;
+  position: absolute;
+}
+.MuiAppBar-positionStatic-4 {
+  position: static;
+  flex-shrink: 0;
+}
+.MuiAppBar-colorDefault-5 {
+  color: rgba(0, 0, 0, 0.87);
+  background-color: #f5f5f5;
+}
+.MuiAppBar-colorPrimary-6 {
+  color: rgba(255, 255, 255, 1);
+  background-color: #3f51b5;
+}
+.MuiAppBar-colorAccent-7 {
+  color: rgba(255, 255, 255, 1);
+  background-color: #ff4081;
+}
+.MuiToolbar-root-35 {
+  display: flex;
+  position: relative;
+  min-height: 56px;
+  align-items: center;
+}
+@media (min-width:1px) and (orientation: landscape) {
+  .MuiToolbar-root-35 {
+    min-height: 48px;
+  }
+}
+@media (min-width:600px) {
+  .MuiToolbar-root-35 {
+    min-height: 64px;
+  }
+}
+.MuiToolbar-gutters-36 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+@media (min-width:600px) {
+  .MuiToolbar-gutters-36 {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+.MuiTypography-root-37 {
+  margin: 0;
+  display: block;
+}
+.MuiTypography-display4-38 {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 7rem;
+  font-weight: 300;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  line-height: 1.14286em;
+  margin-left: -.06em;
+  letter-spacing: -.04em;
+}
+.MuiTypography-display3-39 {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 3.5rem;
+  font-weight: 400;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  line-height: 1.30357em;
+  margin-left: -.04em;
+  letter-spacing: -.02em;
+}
+.MuiTypography-display2-40 {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 2.8125rem;
+  font-weight: 400;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  line-height: 1.06667em;
+  margin-left: -.04em;
+}
+.MuiTypography-display1-41 {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 2.125rem;
+  font-weight: 400;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  line-height: 1.20588em;
+  margin-left: -.04em;
+}
+.MuiTypography-headline-42 {
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 1.5rem;
+  font-weight: 400;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  line-height: 1.35417em;
+}
+.MuiTypography-title-43 {
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 1.3125rem;
+  font-weight: 500;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  line-height: 1.16667em;
+}
+.MuiTypography-subheading-44 {
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 1rem;
+  font-weight: 400;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  line-height: 1.5em;
+}
+.MuiTypography-body2-45 {
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  line-height: 1.71429em;
+}
+.MuiTypography-body1-46 {
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 0.875rem;
+  font-weight: 400;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  line-height: 1.46429em;
+}
+.MuiTypography-caption-47 {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 0.75rem;
+  font-weight: 400;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  line-height: 1.375em;
+}
+.MuiTypography-button-48 {
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  text-transform: uppercase;
+}
+.MuiTypography-alignLeft-49 {
+  text-align: left;
+}
+.MuiTypography-alignCenter-50 {
+  text-align: center;
+}
+.MuiTypography-alignRight-51 {
+  text-align: right;
+}
+.MuiTypography-alignJustify-52 {
+  text-align: justify;
+}
+.MuiTypography-noWrap-53 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.MuiTypography-gutterBottom-54 {
+  margin-bottom: 0.35em;
+}
+.MuiTypography-paragraph-55 {
+  margin-bottom: 16px;
+}
+.MuiTypography-colorInherit-56 {
+  color: inherit;
+}
+.MuiTypography-colorPrimary-57 {
+  color: #3f51b5;
+}
+.MuiTypography-colorSecondary-58 {
+  color: rgba(0, 0, 0, 0.54);
+}
+.MuiTypography-colorAccent-59 {
+  color: #f50057;
+}
+.MuiTypography-colorError-60 {
+  color: #ff1744;
+}
+.MuiDivider-root-82 {
+  height: 1px;
+  margin: 0;
+  border: none;
+  flex-shrink: 0;
+}
+.MuiDivider-default-83 {
+  background-color: rgba(0, 0, 0, 0.12);
+}
+.MuiDivider-inset-84 {
+  margin-left: 72px;
+}
+.MuiDivider-light-85 {
+  background-color: rgba(0, 0, 0, 0.075);
+}
+.MuiDivider-absolute-86 {
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  position: absolute;
+}
+.MuiTable-root-61 {
+  width: 100%;
+  overflow: hidden;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+.MuiTableBody-root-62 {
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 0.8125rem;
+}
+.MuiTableCell-root-68 {
+  text-align: left;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.075);
+}
+.MuiTableCell-numeric-69 {
+  text-align: right;
+  flex-direction: row-reverse;
+}
+.MuiTableCell-head-70 {
+  position: relative;
+  font-weight: 500;
+}
+.MuiTableCell-paddingDefault-71 {
+  padding: 4px 56px 4px 24px;
+}
+.MuiTableCell-paddingDefault-71:last-child {
+  padding-right: 24px;
+}
+.MuiTableCell-paddingDense-72 {
+  padding-right: 24px;
+}
+.MuiTableCell-paddingCheckbox-73 {
+  padding: 0 12px;
+}
+.MuiTableCell-footer-74 {
+  border-bottom: 0;
+}
+.MuiTableHead-root-87 {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.MuiTableRow-root-63 {
+  color: inherit;
+  height: 48px;
+  display: table-row;
+  vertical-align: middle;
+}
+.MuiTableRow-root-63:focus {
+  outline: none;
+}
+.MuiTableRow-head-64 {
+  height: 56px;
+}
+.MuiTableRow-footer-65 {
+  height: 56px;
+}
+.MuiTableRow-hover-66:hover {
+  background: #eeeeee;
+}
+.MuiTableRow-selected-67 {
+  background: #f5f5f5;
+}
+.MuiChip-root-75 {
+  color: rgba(0, 0, 0, 0.87);
+  width: fit-content;
+  border: none;
+  height: 32px;
+  cursor: default;
+  padding: 0;
+  display: flex;
+  outline: none;
+  font-size: 0.8125rem;
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  align-items: center;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  white-space: nowrap;
+  border-radius: 16px;
+  justify-content: center;
+  background-color: rgb(220, 220, 220);
+}
+.MuiChip-clickable-76 {
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.MuiChip-clickable-76:hover, .MuiChip-clickable-76:focus {
+  background-color: rgb(202, 202, 202);
+}
+.MuiChip-clickable-76:active {
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2),0px 1px 1px 0px rgba(0, 0, 0, 0.14),0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+  background-color: rgb(193, 193, 193);
+}
+.MuiChip-deletable-77:focus {
+  background-color: rgb(202, 202, 202);
+}
+.MuiChip-avatar-78 {
+  width: 32px;
+  height: 32px;
+  font-size: 1rem;
+  margin-right: -4px;
+}
+.MuiChip-avatarChildren-79 {
+  width: 19px;
+  height: 19px;
+}
+.MuiChip-label-80 {
+  cursor: inherit;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  white-space: nowrap;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+.MuiChip-deleteIcon-81 {
+  color: rgba(0, 0, 0, 0.26);
+  cursor: pointer;
+  height: auto;
+  margin: 0 4px 0 -8px;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.MuiChip-deleteIcon-81:hover {
+  color: rgba(0, 0, 0, 0.4);
+}</style><style type="text/css" data-styled-components="dAgvJQ gMXIXS blWizI kTwJlg" data-styled-components-is-local="true">/* sc-component-id: sc-bdVaJa */
+.sc-bdVaJa {}
+
+.kTwJlg{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;padding:2.5rem;}
+/* sc-component-id: sc-bwzfXH */
+.sc-bwzfXH {}
+
+.dAgvJQ{color:#fff;}
+/* sc-component-id: sc-htpNat */
+.sc-htpNat {}
+
+.gMXIXS{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;}
+/* sc-component-id: sc-bxivhb */
+.sc-bxivhb {}
+
+.blWizI{width:90%;}
+</style><html lang="en" data-reactroot=""><head><title>leasot report</title><meta charSet="UTF-8"/></head><body style="background-color:#F4F3F4"><div><header class="MuiPaper-root-8 MuiPaper-shadow4-14 MuiAppBar-root-1 MuiAppBar-positionStatic-4 MuiAppBar-colorPrimary-6"><div class="MuiToolbar-root-35 MuiToolbar-gutters-36"><h2 class="MuiTypography-root-37 MuiTypography-title-43 MuiTypography-colorInherit-56"><a class="sc-bwzfXH dAgvJQ" href="./../../index.html">Leasot Report</a></h2></div></header><div class="sc-htpNat gMXIXS"><div class="sc-bxivhb blWizI"><h4>example/testDir/index_001.js</h4><hr class="MuiDivider-root-82 MuiDivider-default-83"/><div style="width:60rem;border:1px solid #DEDEDF"><table style="text-align:left;width:100%;border:none;background-color:#FFF;border-collapse:collapse;border-spacing:0"><tbody><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">1</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L1"><pre style="margin:0px;padding:0px;border:none"><code><span>// @flow</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">2</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L2"><pre style="margin:0px;padding:0px;border:none"><code><span>import React, { type Node } from &quot;react&quot;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">3</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L3"><pre style="margin:0px;padding:0px;border:none"><code><span>import Row, { type Props as RowProps } from &quot;./Row&quot;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">4</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L4"><pre style="margin:0px;padding:0px;border:none"><code><span></span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">5</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L5"><pre style="margin:0px;padding:0px;border:none"><code><span>export type Props = {</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">6</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L6"><pre style="margin:0px;padding:0px;border:none"><code><span>  fileName: number,</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">7</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L7"><pre style="margin:0px;padding:0px;border:none"><code><span>  codes: Array&lt;RowProps&gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">8</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L8"><pre style="margin:0px;padding:0px;border:none"><code><span>}</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">9</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L9"><pre style="margin:0px;padding:0px;border:none"><code><span></span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">10</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L10"><pre style="margin:0px;padding:0px;border:none"><code><span>const style = {</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">11</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L11"><pre style="margin:0px;padding:0px;border:none"><code><span>  margin: &quot;0px&quot;,</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">12</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L12"><pre style="margin:0px;padding:0px;border:none"><code><span>  padding: &quot;0px&quot;,</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">13</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L13"><pre style="margin:0px;padding:0px;border:none"><code><span>  border: &quot;none&quot;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">14</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L14"><pre style="margin:0px;padding:0px;border:none"><code><span>}</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">15</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L15"><pre style="margin:0px;padding:0px;border:none"><code><span></span></code></pre></td></tr><tr style="margin:0px;padding:0px;background-color:#FFC0CB;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#FFC0CB;padding-left:30px;color:#A29999">16</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L16"><pre style="margin:0px;padding:0px;border:none"><code><span>// TODO : foo</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">17</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L17"><pre style="margin:0px;padding:0px;border:none"><code><span>export default ({ fileName, codes }: Props) =&gt; (</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">18</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L18"><pre style="margin:0px;padding:0px;border:none"><code><span>  &lt;div&gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">19</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L19"><pre style="margin:0px;padding:0px;border:none"><code><span>    &lt;h3&gt;Leasot Report&lt;/h3&gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">20</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L20"><pre style="margin:0px;padding:0px;border:none"><code><span>    &lt;h4&gt;{fileName}&lt;/h4&gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">21</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L21"><pre style="margin:0px;padding:0px;border:none"><code><span>    &lt;div style={{ width: &quot;60rem&quot;, border: &quot;1px solid #DEDEDF&quot; }}&gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">22</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L22"><pre style="margin:0px;padding:0px;border:none"><code><span>      &lt;table</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">23</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L23"><pre style="margin:0px;padding:0px;border:none"><code><span>        style={{</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">24</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L24"><pre style="margin:0px;padding:0px;border:none"><code><span>          textAlign: &quot;left&quot;,</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">25</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L25"><pre style="margin:0px;padding:0px;border:none"><code><span>          width: &quot;100%&quot;,</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">26</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L26"><pre style="margin:0px;padding:0px;border:none"><code><span>          border: &quot;none&quot;,</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">27</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L27"><pre style="margin:0px;padding:0px;border:none"><code><span>          backgroundColor: &quot;#FFF&quot;,</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">28</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L28"><pre style="margin:0px;padding:0px;border:none"><code><span>          borderCollapse: &quot;collapse&quot;,</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">29</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L29"><pre style="margin:0px;padding:0px;border:none"><code><span>          borderSpacing: 0</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">30</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L30"><pre style="margin:0px;padding:0px;border:none"><code><span>        }}</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">31</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L31"><pre style="margin:0px;padding:0px;border:none"><code><span>      &gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">32</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L32"><pre style="margin:0px;padding:0px;border:none"><code><span>        &lt;tbody&gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">33</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L33"><pre style="margin:0px;padding:0px;border:none"><code><span>          {codes.map(({ line, code, todo }) =&gt; (</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">34</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L34"><pre style="margin:0px;padding:0px;border:none"><code><span>            &lt;Row key={line} line={line} code={code} todo={todo} /&gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">35</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L35"><pre style="margin:0px;padding:0px;border:none"><code><span>          ))}</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">36</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L36"><pre style="margin:0px;padding:0px;border:none"><code><span>        &lt;/tbody&gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">37</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L37"><pre style="margin:0px;padding:0px;border:none"><code><span>      &lt;/table&gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">38</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L38"><pre style="margin:0px;padding:0px;border:none"><code><span>    &lt;/div&gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">39</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L39"><pre style="margin:0px;padding:0px;border:none"><code><span>  &lt;/div&gt;</span></code></pre></td></tr><tr style="margin:0px;padding:0px;border:none"><td style="text-align:left;width:20px;font-size:10px;margin:0px;padding:0px;border:none;background-color:#F7F7F7;padding-left:30px;color:#A29999">40</td><td style="text-align:left;font-size:10px;margin:0px;border:none;padding-left:5px" id="L40"><pre style="margin:0px;padding:0px;border:none"><code><span>)</span></code></pre></td></tr></tbody></table></div></div></div><div class="sc-bdVaJa kTwJlg"><hr class="MuiDivider-root-82 MuiDivider-default-83"/>Leasot Report generated by <a href="https://github.com/pgilad/leasot" target="_blank" rel="noopener noreferrer">leasot</a> and <a href="https://github.com/wheatandcat/leasot-report" target="_blank" rel="noopener noreferrer">leasot-report</a></div></div></body></html>
