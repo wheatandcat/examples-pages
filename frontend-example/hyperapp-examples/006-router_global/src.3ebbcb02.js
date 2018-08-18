@@ -1464,13 +1464,12 @@ if (hadRuntime) {
 },{"./runtime":"QVnC"}],"aIIw":[function(require,module,exports) {
 module.exports = require("regenerator-runtime");
 
-},{"regenerator-runtime":"QYzI"}],"MEvW":[function(require,module,exports) {
+},{"regenerator-runtime":"QYzI"}],"6aiX":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.actions = exports.state = undefined;
 
 var _regenerator = require("babel-runtime/regenerator");
 
@@ -1478,36 +1477,58 @@ var _regenerator2 = _interopRequireDefault(_regenerator);
 
 var _this = undefined;
 
-var _hyperapp = require("hyperapp");
-
-var _router = require("@hyperapp/router");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var host = "https://mock-server-yznxmkzmvo.now.sh" || "http://localhost:3000";
 
-var state = exports.state = {
-  nodes: []
-};
-
-var actions = exports.actions = {
-  remove: function remove(id) {
+exports.default = {
+  // 入力は全てこれを使う
+  // keyNameは、「data-input-name="*****""」で指定
+  onInput: function onInput(e) {
+    return function (state) {
+      return _defineProperty({}, e.target.getAttribute("data-input-name"), {
+        input: Object.assign({}, state.createUser.input, _defineProperty({}, e.target.name, e.target.value))
+      });
+    };
+  },
+  resetCreateUserInput: function resetCreateUserInput() {
     return function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(_, actions) {
-        var response;
+      return {
+        createUser: {
+          input: {
+            name: "",
+            genderCode: "1"
+          },
+          redirectToId: null
+        }
+      };
+    };
+  },
+  redirectToCreateUserId: function redirectToCreateUserId(id) {
+    return function (state) {
+      return {
+        createUser: Object.assign({}, state.createUser, {
+          redirectToId: id
+        })
+      };
+    };
+  },
+
+  /* Users */
+  getUsers: function getUsers() {
+    return function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(_, actions) {
+        var response, result;
         return _regenerator2.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return fetch(host + "/users/" + id, {
-                  method: "DELETE",
-                  headers: {
-                    "Content-Type": "application/json"
-                  }
-                });
+                return fetch(host + "/users");
 
               case 2:
                 response = _context.sent;
@@ -1517,14 +1538,19 @@ var actions = exports.actions = {
                   break;
                 }
 
-                return _context.abrupt("return", alert("削除に失敗しました"));
+                return _context.abrupt("return", alert("通信エラー"));
 
               case 5:
+                _context.next = 7;
+                return response.json();
 
-                // リストを再取得
-                actions.get();
+              case 7:
+                result = _context.sent;
 
-              case 6:
+
+                actions.setUsers(result);
+
+              case 9:
               case "end":
                 return _context.stop();
             }
@@ -1533,21 +1559,31 @@ var actions = exports.actions = {
       }));
 
       return function (_x, _x2) {
-        return _ref.apply(this, arguments);
+        return _ref2.apply(this, arguments);
       };
     }();
   },
-
-  get: function get() {
+  setUsers: function setUsers(users) {
     return function () {
-      var _ref2 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_, actions) {
+      return {
+        users: {
+          nodes: users
+        }
+      };
+    };
+  },
+
+  /* User */
+  getUser: function getUser(id) {
+    return function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_, actions) {
         var response, result;
         return _regenerator2.default.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return fetch(host + "/users");
+                return fetch(host + "/users/" + id);
 
               case 2:
                 response = _context2.sent;
@@ -1567,7 +1603,7 @@ var actions = exports.actions = {
                 result = _context2.sent;
 
 
-                actions.set(result);
+                actions.setUser(result);
 
               case 9:
               case "end":
@@ -1578,28 +1614,152 @@ var actions = exports.actions = {
       }));
 
       return function (_x3, _x4) {
-        return _ref2.apply(this, arguments);
+        return _ref3.apply(this, arguments);
       };
     }();
   },
-
-  set: function set(users) {
+  setUser: function setUser(user) {
     return function () {
-      return { nodes: users };
+      return {
+        user: {
+          data: user
+        }
+      };
     };
+  },
+  saveUser: function saveUser() {
+    return function () {
+      var _ref4 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee3(state, actions) {
+        var response, result;
+        return _regenerator2.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return fetch(host + "/users", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify(state.createUser.input)
+                });
+
+              case 2:
+                response = _context3.sent;
+
+                if (response.ok) {
+                  _context3.next = 5;
+                  break;
+                }
+
+                return _context3.abrupt("return", alert("登録に失敗しました"));
+
+              case 5:
+                _context3.next = 7;
+                return response.json();
+
+              case 7:
+                result = _context3.sent;
+
+
+                actions.redirectToCreateUserId(result.id);
+
+              case 9:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, _this);
+      }));
+
+      return function (_x5, _x6) {
+        return _ref4.apply(this, arguments);
+      };
+    }();
+  },
+  removeUser: function removeUser(id) {
+    return function () {
+      var _ref5 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee4(_, actions) {
+        var response;
+        return _regenerator2.default.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return fetch(host + "/users/" + id, {
+                  method: "DELETE",
+                  headers: {
+                    "Content-Type": "application/json"
+                  }
+                });
+
+              case 2:
+                response = _context4.sent;
+
+                if (response.ok) {
+                  _context4.next = 5;
+                  break;
+                }
+
+                return _context4.abrupt("return", alert("削除に失敗しました"));
+
+              case 5:
+
+                // リストを再取得
+                actions.getUsers();
+
+              case 6:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, _this);
+      }));
+
+      return function (_x7, _x8) {
+        return _ref5.apply(this, arguments);
+      };
+    }();
   }
 };
+},{"babel-runtime/regenerator":"aIIw"}],"z89B":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = {
+  createUser: {
+    input: {
+      name: "",
+      genderCode: "1"
+    },
+    redirectToId: null
+  },
+  // FIXME: 仕様で直下に配列にできないので連想配列にしている
+  users: {
+    nodes: []
+  },
+  user: {
+    data: null
+  }
+};
+},{}],"MEvW":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _hyperapp = require("hyperapp");
+
+var _router = require("@hyperapp/router");
 
 exports.default = function () {
   return function (state, actions) {
     return (0, _hyperapp.h)(
       "main",
-      { oncreate: actions.users.get },
-      (0, _hyperapp.h)(
-        "h1",
-        null,
-        "users"
-      ),
+      { oncreate: actions.getUsers },
       (0, _hyperapp.h)(
         "table",
         { border: "1", style: { width: "30rem" } },
@@ -1656,7 +1816,7 @@ exports.default = function () {
               (0, _hyperapp.h)(
                 "button",
                 { onclick: function onclick() {
-                    return actions.users.remove(user.id);
+                    return actions.removeUser(user.id);
                   } },
                 "\u524A\u9664"
               )
@@ -1667,98 +1827,23 @@ exports.default = function () {
     );
   };
 };
-},{"babel-runtime/regenerator":"aIIw","hyperapp":"/xJO","@hyperapp/router":"z3Fd"}],"q1NK":[function(require,module,exports) {
+},{"hyperapp":"/xJO","@hyperapp/router":"z3Fd"}],"q1NK":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.actions = exports.state = undefined;
-
-var _regenerator = require("babel-runtime/regenerator");
-
-var _regenerator2 = _interopRequireDefault(_regenerator);
-
-var _this = undefined;
 
 var _hyperapp = require("hyperapp");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-var host = "https://mock-server-yznxmkzmvo.now.sh" || "http://localhost:3000";
-
-var state = exports.state = {
-  data: null
-};
-
-var actions = exports.actions = {
-  get: function get(id) {
-    return function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(_, actions) {
-        var response, result;
-        return _regenerator2.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return fetch(host + "/users/" + id);
-
-              case 2:
-                response = _context.sent;
-
-                if (response.ok) {
-                  _context.next = 5;
-                  break;
-                }
-
-                return _context.abrupt("return", alert("通信エラー"));
-
-              case 5:
-                _context.next = 7;
-                return response.json();
-
-              case 7:
-                result = _context.sent;
-
-
-                actions.set(result);
-
-              case 9:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, _this);
-      }));
-
-      return function (_x, _x2) {
-        return _ref.apply(this, arguments);
-      };
-    }();
-  },
-
-  set: function set(user) {
-    return function () {
-      return { data: user };
-    };
-  }
-};
-
-exports.default = function (_ref2) {
-  var match = _ref2.match;
+exports.default = function (_ref) {
+  var match = _ref.match;
   return function (state, actions) {
     return (0, _hyperapp.h)(
       "main",
       { oncreate: function oncreate() {
-          return actions.user.get(match.params.userId);
+          return actions.getUser(match.params.userId);
         } },
-      (0, _hyperapp.h)(
-        "h1",
-        null,
-        "user"
-      ),
       state.user.data ? (0, _hyperapp.h)(
         "table",
         { border: "1", style: { width: "30rem" } },
@@ -1804,141 +1889,36 @@ exports.default = function (_ref2) {
     );
   };
 };
-},{"babel-runtime/regenerator":"aIIw","hyperapp":"/xJO"}],"C28z":[function(require,module,exports) {
+},{"hyperapp":"/xJO"}],"C28z":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.actions = exports.state = undefined;
-
-var _regenerator = require("babel-runtime/regenerator");
-
-var _regenerator2 = _interopRequireDefault(_regenerator);
-
-var _this = undefined;
 
 var _hyperapp = require("hyperapp");
 
 var _router = require("@hyperapp/router");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var host = "https://mock-server-yznxmkzmvo.now.sh" || "http://localhost:3000";
-
-var state = exports.state = {
-  input: {
-    name: "",
-    genderCode: "1"
-  },
-  redirectToId: null
-};
-
-var actions = exports.actions = {
-  onInput: function onInput(e) {
-    return function (state) {
-      return {
-        input: Object.assign({}, state.input, _defineProperty({}, e.target.name, e.target.value))
-      };
-    };
-  },
-  resetInput: function resetInput() {
-    return function () {
-      return {
-        input: {
-          name: "",
-          genderCode: "1"
-        },
-        redirectToId: null
-      };
-    };
-  },
-  redirectToId: function redirectToId(id) {
-    return function () {
-      return {
-        redirectToId: id
-      };
-    };
-  },
-  save: function save() {
-    return function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(state, actions) {
-        var response, result;
-        return _regenerator2.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return fetch(host + "/users", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json"
-                  },
-                  body: JSON.stringify(state.input)
-                });
-
-              case 2:
-                response = _context.sent;
-
-                if (response.ok) {
-                  _context.next = 5;
-                  break;
-                }
-
-                return _context.abrupt("return", alert("登録に失敗しました"));
-
-              case 5:
-                _context.next = 7;
-                return response.json();
-
-              case 7:
-                result = _context.sent;
-
-
-                actions.redirectToId(result.id);
-
-              case 9:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, _this);
-      }));
-
-      return function (_x, _x2) {
-        return _ref.apply(this, arguments);
-      };
-    }();
-  }
-};
-
 exports.default = function () {
   return function (state, actions) {
     if (state.createUser.redirectToId) {
-      actions.createUser.resetInput();
+      actions.resetCreateUserInput();
       return (0, _hyperapp.h)(_router.Redirect, { to: "users/" + state.createUser.redirectToId });
     }
 
     return (0, _hyperapp.h)(
       "main",
-      { oncreate: actions.createUser.resetInput },
-      (0, _hyperapp.h)(
-        "h1",
-        null,
-        "form"
-      ),
+      { oncreate: actions.resetCreateUserInput },
       "\u540D\u524D:",
       " ",
       (0, _hyperapp.h)("input", {
         type: "text",
         placeholder: "name",
+        "data-input-name": "createUser",
         name: "name",
         value: state.createUser.input.name,
-        oninput: actions.createUser.onInput
+        oninput: actions.onInput
       }),
       (0, _hyperapp.h)("br", null),
       "\u6027\u5225:",
@@ -1947,8 +1927,9 @@ exports.default = function () {
         type: "radio",
         name: "genderCode",
         value: 1,
+        "data-input-name": "createUser",
         checked: state.createUser.input.genderCode == 1,
-        oninput: actions.createUser.onInput
+        oninput: actions.onInput
       }),
       "\u7537\u6027",
       " ",
@@ -1956,8 +1937,9 @@ exports.default = function () {
         type: "radio",
         name: "genderCode",
         value: 2,
+        "data-input-name": "createUser",
         checked: state.createUser.input.genderCode == 2,
-        oninput: actions.createUser.onInput
+        oninput: actions.onInput
       }),
       "\u5973\u6027",
       (0, _hyperapp.h)("br", null),
@@ -1967,14 +1949,14 @@ exports.default = function () {
         null,
         (0, _hyperapp.h)(
           "button",
-          { onclick: actions.createUser.save },
+          { onclick: actions.saveUser },
           "\u767B\u9332"
         )
       )
     );
   };
 };
-},{"babel-runtime/regenerator":"aIIw","hyperapp":"/xJO","@hyperapp/router":"z3Fd"}],"Focm":[function(require,module,exports) {
+},{"hyperapp":"/xJO","@hyperapp/router":"z3Fd"}],"Focm":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1985,6 +1967,14 @@ exports.main = undefined;
 var _hyperapp = require("hyperapp");
 
 var _router = require("@hyperapp/router");
+
+var _actions = require("./actions");
+
+var _actions2 = _interopRequireDefault(_actions);
+
+var _state = require("./state");
+
+var _state2 = _interopRequireDefault(_state);
 
 var _Users = require("./components/pages/Users");
 
@@ -2000,19 +1990,13 @@ var _CreateUser2 = _interopRequireDefault(_CreateUser);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var state = {
-  users: _Users.state,
-  user: _User.state,
-  createUser: _CreateUser.state,
+var state = Object.assign({}, _state2.default, {
   location: _router.location.state
-};
+});
 
-var actions = {
-  users: _Users.actions,
-  user: _User.actions,
-  createUser: _CreateUser.actions,
+var actions = Object.assign({}, _actions2.default, {
   location: _router.location.actions
-};
+});
 
 var view = function view() {
   return (0, _hyperapp.h)(
@@ -2021,7 +2005,7 @@ var view = function view() {
     (0, _hyperapp.h)(
       "h3",
       null,
-      "hyper-app | 005-router_bundle"
+      "hyper-app | 006-router_global"
     ),
     (0, _hyperapp.h)(
       "ul",
@@ -2049,19 +2033,47 @@ var view = function view() {
     (0, _hyperapp.h)(
       _router.Switch,
       null,
-      (0, _hyperapp.h)(_router.Route, { path: "/", render: _Users2.default }),
-      (0, _hyperapp.h)(_router.Route, { path: "/users", render: _Users2.default }),
-      (0, _hyperapp.h)(_router.Route, { path: "/users/:userId", render: _User2.default }),
-      (0, _hyperapp.h)(_router.Route, { path: "/createUser", render: _CreateUser2.default }),
+      (0, _hyperapp.h)(_router.Route, { path: "/", render: function render() {
+          return (0, _hyperapp.h)(
+            "h3",
+            null,
+            "users"
+          );
+        } }),
+      (0, _hyperapp.h)(_router.Route, { path: "/users", render: function render() {
+          return (0, _hyperapp.h)(
+            "h3",
+            null,
+            "users"
+          );
+        } }),
+      (0, _hyperapp.h)(_router.Route, { path: "/users/:userId", render: function render() {
+          return (0, _hyperapp.h)(
+            "h3",
+            null,
+            "user"
+          );
+        } }),
+      (0, _hyperapp.h)(_router.Route, { path: "/createUser", render: function render() {
+          return (0, _hyperapp.h)(
+            "h3",
+            null,
+            "form"
+          );
+        } }),
       (0, _hyperapp.h)(_router.Route, { render: function render() {
-          return (0, _hyperapp.h)(_router.Redirect, { to: "/users" });
+          return (0, _hyperapp.h)(_router.Redirect, { to: "/" });
         } })
-    )
+    ),
+    (0, _hyperapp.h)(_router.Route, { path: "/", render: _Users2.default }),
+    (0, _hyperapp.h)(_router.Route, { path: "/users", render: _Users2.default }),
+    (0, _hyperapp.h)(_router.Route, { path: "/users/:userId", render: _User2.default }),
+    (0, _hyperapp.h)(_router.Route, { path: "/createUser", render: _CreateUser2.default })
   );
 };
 
 var main = exports.main = (0, _hyperapp.app)(state, actions, view, document.body);
 
 _router.location.subscribe(main.location);
-},{"hyperapp":"/xJO","@hyperapp/router":"z3Fd","./components/pages/Users":"MEvW","./components/pages/User":"q1NK","./components/pages/CreateUser":"C28z"}]},{},["Focm"], null)
-//# sourceMappingURL=/src.ad238f94.map
+},{"hyperapp":"/xJO","@hyperapp/router":"z3Fd","./actions":"6aiX","./state":"z89B","./components/pages/Users":"MEvW","./components/pages/User":"q1NK","./components/pages/CreateUser":"C28z"}]},{},["Focm"], null)
+//# sourceMappingURL=/src.3ebbcb02.map
