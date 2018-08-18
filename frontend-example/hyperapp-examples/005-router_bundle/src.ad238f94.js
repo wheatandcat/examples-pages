@@ -103,7 +103,598 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   // Override the current require with this new one
   return newRequire;
-})({"QVnC":[function(require,module,exports) {
+})({"/xJO":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.h = h;
+exports.app = app;
+function h(name, attributes) {
+  var rest = [];
+  var children = [];
+  var length = arguments.length;
+
+  while (length-- > 2) rest.push(arguments[length]);
+
+  while (rest.length) {
+    var node = rest.pop();
+    if (node && node.pop) {
+      for (length = node.length; length--;) {
+        rest.push(node[length]);
+      }
+    } else if (node != null && node !== true && node !== false) {
+      children.push(node);
+    }
+  }
+
+  return typeof name === "function" ? name(attributes || {}, children) : {
+    nodeName: name,
+    attributes: attributes || {},
+    children: children,
+    key: attributes && attributes.key
+  };
+}
+
+function app(state, actions, view, container) {
+  var map = [].map;
+  var rootElement = container && container.children[0] || null;
+  var oldNode = rootElement && recycleElement(rootElement);
+  var lifecycle = [];
+  var skipRender;
+  var isRecycling = true;
+  var globalState = clone(state);
+  var wiredActions = wireStateToActions([], globalState, clone(actions));
+
+  scheduleRender();
+
+  return wiredActions;
+
+  function recycleElement(element) {
+    return {
+      nodeName: element.nodeName.toLowerCase(),
+      attributes: {},
+      children: map.call(element.childNodes, function (element) {
+        return element.nodeType === 3 // Node.TEXT_NODE
+        ? element.nodeValue : recycleElement(element);
+      })
+    };
+  }
+
+  function resolveNode(node) {
+    return typeof node === "function" ? resolveNode(node(globalState, wiredActions)) : node != null ? node : "";
+  }
+
+  function render() {
+    skipRender = !skipRender;
+
+    var node = resolveNode(view);
+
+    if (container && !skipRender) {
+      rootElement = patch(container, rootElement, oldNode, oldNode = node);
+    }
+
+    isRecycling = false;
+
+    while (lifecycle.length) lifecycle.pop()();
+  }
+
+  function scheduleRender() {
+    if (!skipRender) {
+      skipRender = true;
+      setTimeout(render);
+    }
+  }
+
+  function clone(target, source) {
+    var out = {};
+
+    for (var i in target) out[i] = target[i];
+    for (var i in source) out[i] = source[i];
+
+    return out;
+  }
+
+  function setPartialState(path, value, source) {
+    var target = {};
+    if (path.length) {
+      target[path[0]] = path.length > 1 ? setPartialState(path.slice(1), value, source[path[0]]) : value;
+      return clone(source, target);
+    }
+    return value;
+  }
+
+  function getPartialState(path, source) {
+    var i = 0;
+    while (i < path.length) {
+      source = source[path[i++]];
+    }
+    return source;
+  }
+
+  function wireStateToActions(path, state, actions) {
+    for (var key in actions) {
+      typeof actions[key] === "function" ? function (key, action) {
+        actions[key] = function (data) {
+          var result = action(data);
+
+          if (typeof result === "function") {
+            result = result(getPartialState(path, globalState), actions);
+          }
+
+          if (result && result !== (state = getPartialState(path, globalState)) && !result.then // !isPromise
+          ) {
+              scheduleRender(globalState = setPartialState(path, clone(state, result), globalState));
+            }
+
+          return result;
+        };
+      }(key, actions[key]) : wireStateToActions(path.concat(key), state[key] = clone(state[key]), actions[key] = clone(actions[key]));
+    }
+
+    return actions;
+  }
+
+  function getKey(node) {
+    return node ? node.key : null;
+  }
+
+  function eventListener(event) {
+    return event.currentTarget.events[event.type](event);
+  }
+
+  function updateAttribute(element, name, value, oldValue, isSvg) {
+    if (name === "key") {} else if (name === "style") {
+      for (var i in clone(oldValue, value)) {
+        var style = value == null || value[i] == null ? "" : value[i];
+        if (i[0] === "-") {
+          element[name].setProperty(i, style);
+        } else {
+          element[name][i] = style;
+        }
+      }
+    } else {
+      if (name[0] === "o" && name[1] === "n") {
+        name = name.slice(2);
+
+        if (element.events) {
+          if (!oldValue) oldValue = element.events[name];
+        } else {
+          element.events = {};
+        }
+
+        element.events[name] = value;
+
+        if (value) {
+          if (!oldValue) {
+            element.addEventListener(name, eventListener);
+          }
+        } else {
+          element.removeEventListener(name, eventListener);
+        }
+      } else if (name in element && name !== "list" && !isSvg) {
+        element[name] = value == null ? "" : value;
+      } else if (value != null && value !== false) {
+        element.setAttribute(name, value);
+      }
+
+      if (value == null || value === false) {
+        element.removeAttribute(name);
+      }
+    }
+  }
+
+  function createElement(node, isSvg) {
+    var element = typeof node === "string" || typeof node === "number" ? document.createTextNode(node) : (isSvg = isSvg || node.nodeName === "svg") ? document.createElementNS("http://www.w3.org/2000/svg", node.nodeName) : document.createElement(node.nodeName);
+
+    var attributes = node.attributes;
+    if (attributes) {
+      if (attributes.oncreate) {
+        lifecycle.push(function () {
+          attributes.oncreate(element);
+        });
+      }
+
+      for (var i = 0; i < node.children.length; i++) {
+        element.appendChild(createElement(node.children[i] = resolveNode(node.children[i]), isSvg));
+      }
+
+      for (var name in attributes) {
+        updateAttribute(element, name, attributes[name], null, isSvg);
+      }
+    }
+
+    return element;
+  }
+
+  function updateElement(element, oldAttributes, attributes, isSvg) {
+    for (var name in clone(oldAttributes, attributes)) {
+      if (attributes[name] !== (name === "value" || name === "checked" ? element[name] : oldAttributes[name])) {
+        updateAttribute(element, name, attributes[name], oldAttributes[name], isSvg);
+      }
+    }
+
+    var cb = isRecycling ? attributes.oncreate : attributes.onupdate;
+    if (cb) {
+      lifecycle.push(function () {
+        cb(element, oldAttributes);
+      });
+    }
+  }
+
+  function removeChildren(element, node) {
+    var attributes = node.attributes;
+    if (attributes) {
+      for (var i = 0; i < node.children.length; i++) {
+        removeChildren(element.childNodes[i], node.children[i]);
+      }
+
+      if (attributes.ondestroy) {
+        attributes.ondestroy(element);
+      }
+    }
+    return element;
+  }
+
+  function removeElement(parent, element, node) {
+    function done() {
+      parent.removeChild(removeChildren(element, node));
+    }
+
+    var cb = node.attributes && node.attributes.onremove;
+    if (cb) {
+      cb(element, done);
+    } else {
+      done();
+    }
+  }
+
+  function patch(parent, element, oldNode, node, isSvg) {
+    if (node === oldNode) {} else if (oldNode == null || oldNode.nodeName !== node.nodeName) {
+      var newElement = createElement(node, isSvg);
+      parent.insertBefore(newElement, element);
+
+      if (oldNode != null) {
+        removeElement(parent, element, oldNode);
+      }
+
+      element = newElement;
+    } else if (oldNode.nodeName == null) {
+      element.nodeValue = node;
+    } else {
+      updateElement(element, oldNode.attributes, node.attributes, isSvg = isSvg || node.nodeName === "svg");
+
+      var oldKeyed = {};
+      var newKeyed = {};
+      var oldElements = [];
+      var oldChildren = oldNode.children;
+      var children = node.children;
+
+      for (var i = 0; i < oldChildren.length; i++) {
+        oldElements[i] = element.childNodes[i];
+
+        var oldKey = getKey(oldChildren[i]);
+        if (oldKey != null) {
+          oldKeyed[oldKey] = [oldElements[i], oldChildren[i]];
+        }
+      }
+
+      var i = 0;
+      var k = 0;
+
+      while (k < children.length) {
+        var oldKey = getKey(oldChildren[i]);
+        var newKey = getKey(children[k] = resolveNode(children[k]));
+
+        if (newKeyed[oldKey]) {
+          i++;
+          continue;
+        }
+
+        if (newKey != null && newKey === getKey(oldChildren[i + 1])) {
+          if (oldKey == null) {
+            removeElement(element, oldElements[i], oldChildren[i]);
+          }
+          i++;
+          continue;
+        }
+
+        if (newKey == null || isRecycling) {
+          if (oldKey == null) {
+            patch(element, oldElements[i], oldChildren[i], children[k], isSvg);
+            k++;
+          }
+          i++;
+        } else {
+          var keyedNode = oldKeyed[newKey] || [];
+
+          if (oldKey === newKey) {
+            patch(element, keyedNode[0], keyedNode[1], children[k], isSvg);
+            i++;
+          } else if (keyedNode[0]) {
+            patch(element, element.insertBefore(keyedNode[0], oldElements[i]), keyedNode[1], children[k], isSvg);
+          } else {
+            patch(element, oldElements[i], null, children[k], isSvg);
+          }
+
+          newKeyed[newKey] = children[k];
+          k++;
+        }
+      }
+
+      while (i < oldChildren.length) {
+        if (getKey(oldChildren[i]) == null) {
+          removeElement(element, oldElements[i], oldChildren[i]);
+        }
+        i++;
+      }
+
+      for (var i in oldKeyed) {
+        if (!newKeyed[i]) {
+          removeElement(element, oldKeyed[i][0], oldKeyed[i][1]);
+        }
+      }
+    }
+    return element;
+  }
+}
+},{}],"CElP":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Link = Link;
+
+var _hyperapp = require("hyperapp");
+
+function getOrigin(loc) {
+  return loc.protocol + "//" + loc.hostname + (loc.port ? ":" + loc.port : "");
+}
+
+function isExternal(anchorElement) {
+  // Location.origin and HTMLAnchorElement.origin are not
+  // supported by IE and Safari.
+  return getOrigin(location) !== getOrigin(anchorElement);
+}
+
+function Link(props, children) {
+  return function (state, actions) {
+    var to = props.to;
+    var location = state.location;
+    var onclick = props.onclick;
+    delete props.to;
+    delete props.location;
+
+    props.href = to;
+    props.onclick = function (e) {
+      if (onclick) {
+        onclick(e);
+      }
+      if (e.defaultPrevented || e.button !== 0 || e.altKey || e.metaKey || e.ctrlKey || e.shiftKey || props.target === "_blank" || isExternal(e.currentTarget)) {} else {
+        e.preventDefault();
+
+        if (to !== location.pathname) {
+          history.pushState(location.pathname, "", to);
+        }
+      }
+    };
+
+    return (0, _hyperapp.h)("a", props, children);
+  };
+}
+},{"hyperapp":"/xJO"}],"bG11":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.parseRoute = parseRoute;
+function createMatch(isExact, path, url, params) {
+  return {
+    isExact: isExact,
+    path: path,
+    url: url,
+    params: params
+  };
+}
+
+function trimTrailingSlash(url) {
+  for (var len = url.length; "/" === url[--len];);
+  return url.slice(0, len + 1);
+}
+
+function decodeParam(val) {
+  try {
+    return decodeURIComponent(val);
+  } catch (e) {
+    return val;
+  }
+}
+
+function parseRoute(path, url, options) {
+  if (path === url || !path) {
+    return createMatch(path === url, path, url);
+  }
+
+  var exact = options && options.exact;
+  var paths = trimTrailingSlash(path).split("/");
+  var urls = trimTrailingSlash(url).split("/");
+
+  if (paths.length > urls.length || exact && paths.length < urls.length) {
+    return;
+  }
+
+  for (var i = 0, params = {}, len = paths.length, url = ""; i < len; i++) {
+    if (":" === paths[i][0]) {
+      params[paths[i].slice(1)] = urls[i] = decodeParam(urls[i]);
+    } else if (paths[i] !== urls[i]) {
+      return;
+    }
+    url += urls[i] + "/";
+  }
+
+  return createMatch(false, path, url.slice(0, -1), params);
+}
+},{}],"TbmE":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Route = Route;
+
+var _parseRoute = require("./parseRoute");
+
+function Route(props) {
+  return function (state, actions) {
+    var location = state.location;
+    var match = (0, _parseRoute.parseRoute)(props.path, location.pathname, {
+      exact: !props.parent
+    });
+
+    return match && props.render({
+      match: match,
+      location: location
+    });
+  };
+}
+},{"./parseRoute":"bG11"}],"qGuk":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Switch = Switch;
+function Switch(props, children) {
+  return function (state, actions) {
+    var child,
+        i = 0;
+    while (!(child = children[i] && children[i](state, actions)) && i < children.length) i++;
+    return child;
+  };
+}
+},{}],"yBO4":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Redirect = Redirect;
+function Redirect(props) {
+  return function (state, actions) {
+    var location = state.location;
+    history.replaceState(props.from || location.pathname, "", props.to);
+  };
+}
+},{}],"rO79":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function wrapHistory(keys) {
+  return keys.reduce(function (next, key) {
+    var fn = history[key];
+
+    history[key] = function (data, title, url) {
+      fn.call(this, data, title, url);
+      dispatchEvent(new CustomEvent("pushstate", { detail: data }));
+    };
+
+    return function () {
+      history[key] = fn;
+      next && next();
+    };
+  }, null);
+}
+
+var location = exports.location = {
+  state: {
+    pathname: window.location.pathname,
+    previous: window.location.pathname
+  },
+  actions: {
+    go: function (pathname) {
+      history.pushState(null, "", pathname);
+    },
+    set: function (data) {
+      return data;
+    }
+  },
+  subscribe: function (actions) {
+    function handleLocationChange(e) {
+      actions.set({
+        pathname: window.location.pathname,
+        previous: e.detail ? window.location.previous = e.detail : window.location.previous
+      });
+    }
+
+    var unwrap = wrapHistory(["pushState", "replaceState"]);
+
+    addEventListener("pushstate", handleLocationChange);
+    addEventListener("popstate", handleLocationChange);
+
+    return function () {
+      removeEventListener("pushstate", handleLocationChange);
+      removeEventListener("popstate", handleLocationChange);
+      unwrap();
+    };
+  }
+};
+},{}],"z3Fd":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Link = require("./Link");
+
+Object.defineProperty(exports, "Link", {
+  enumerable: true,
+  get: function () {
+    return _Link.Link;
+  }
+});
+
+var _Route = require("./Route");
+
+Object.defineProperty(exports, "Route", {
+  enumerable: true,
+  get: function () {
+    return _Route.Route;
+  }
+});
+
+var _Switch = require("./Switch");
+
+Object.defineProperty(exports, "Switch", {
+  enumerable: true,
+  get: function () {
+    return _Switch.Switch;
+  }
+});
+
+var _Redirect = require("./Redirect");
+
+Object.defineProperty(exports, "Redirect", {
+  enumerable: true,
+  get: function () {
+    return _Redirect.Redirect;
+  }
+});
+
+var _location = require("./location");
+
+Object.defineProperty(exports, "location", {
+  enumerable: true,
+  get: function () {
+    return _location.location;
+  }
+});
+},{"./Link":"CElP","./Route":"TbmE","./Switch":"qGuk","./Redirect":"yBO4","./location":"rO79"}],"QVnC":[function(require,module,exports) {
 var global = arguments[3];
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -873,349 +1464,216 @@ if (hadRuntime) {
 },{"./runtime":"QVnC"}],"aIIw":[function(require,module,exports) {
 module.exports = require("regenerator-runtime");
 
-},{"regenerator-runtime":"QYzI"}],"/xJO":[function(require,module,exports) {
+},{"regenerator-runtime":"QYzI"}],"MEvW":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.h = h;
-exports.app = app;
-function h(name, attributes) {
-  var rest = [];
-  var children = [];
-  var length = arguments.length;
+exports.actions = exports.state = undefined;
 
-  while (length-- > 2) rest.push(arguments[length]);
+var _regenerator = require("babel-runtime/regenerator");
 
-  while (rest.length) {
-    var node = rest.pop();
-    if (node && node.pop) {
-      for (length = node.length; length--;) {
-        rest.push(node[length]);
-      }
-    } else if (node != null && node !== true && node !== false) {
-      children.push(node);
-    }
-  }
+var _regenerator2 = _interopRequireDefault(_regenerator);
 
-  return typeof name === "function" ? name(attributes || {}, children) : {
-    nodeName: name,
-    attributes: attributes || {},
-    children: children,
-    key: attributes && attributes.key
-  };
-}
+var _this = undefined;
 
-function app(state, actions, view, container) {
-  var map = [].map;
-  var rootElement = container && container.children[0] || null;
-  var oldNode = rootElement && recycleElement(rootElement);
-  var lifecycle = [];
-  var skipRender;
-  var isRecycling = true;
-  var globalState = clone(state);
-  var wiredActions = wireStateToActions([], globalState, clone(actions));
+var _hyperapp = require("hyperapp");
 
-  scheduleRender();
+var _router = require("@hyperapp/router");
 
-  return wiredActions;
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-  function recycleElement(element) {
-    return {
-      nodeName: element.nodeName.toLowerCase(),
-      attributes: {},
-      children: map.call(element.childNodes, function (element) {
-        return element.nodeType === 3 // Node.TEXT_NODE
-        ? element.nodeValue : recycleElement(element);
-      })
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+var host = "https://mock-server-yznxmkzmvo.now.sh" || "http://localhost:3000";
+
+var state = exports.state = {
+  nodes: []
+};
+
+var actions = exports.actions = {
+  remove: function remove(id) {
+    return function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(_, actions) {
+        var response;
+        return _regenerator2.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return fetch(host + "/users/" + id, {
+                  method: "DELETE",
+                  headers: {
+                    "Content-Type": "application/json"
+                  }
+                });
+
+              case 2:
+                response = _context.sent;
+
+                if (response.ok) {
+                  _context.next = 5;
+                  break;
+                }
+
+                return _context.abrupt("return", alert("削除に失敗しました"));
+
+              case 5:
+
+                // リストを再取得
+                actions.get();
+
+              case 6:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, _this);
+      }));
+
+      return function (_x, _x2) {
+        return _ref.apply(this, arguments);
+      };
+    }();
+  },
+
+  get: function get() {
+    return function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_, actions) {
+        var response, result;
+        return _regenerator2.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return fetch(host + "/users");
+
+              case 2:
+                response = _context2.sent;
+
+                if (response.ok) {
+                  _context2.next = 5;
+                  break;
+                }
+
+                return _context2.abrupt("return", alert("通信エラー"));
+
+              case 5:
+                _context2.next = 7;
+                return response.json();
+
+              case 7:
+                result = _context2.sent;
+
+
+                actions.set(result);
+
+              case 9:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, _this);
+      }));
+
+      return function (_x3, _x4) {
+        return _ref2.apply(this, arguments);
+      };
+    }();
+  },
+
+  set: function set(users) {
+    return function () {
+      return { nodes: users };
     };
   }
+};
 
-  function resolveNode(node) {
-    return typeof node === "function" ? resolveNode(node(globalState, wiredActions)) : node != null ? node : "";
-  }
-
-  function render() {
-    skipRender = !skipRender;
-
-    var node = resolveNode(view);
-
-    if (container && !skipRender) {
-      rootElement = patch(container, rootElement, oldNode, oldNode = node);
-    }
-
-    isRecycling = false;
-
-    while (lifecycle.length) lifecycle.pop()();
-  }
-
-  function scheduleRender() {
-    if (!skipRender) {
-      skipRender = true;
-      setTimeout(render);
-    }
-  }
-
-  function clone(target, source) {
-    var out = {};
-
-    for (var i in target) out[i] = target[i];
-    for (var i in source) out[i] = source[i];
-
-    return out;
-  }
-
-  function setPartialState(path, value, source) {
-    var target = {};
-    if (path.length) {
-      target[path[0]] = path.length > 1 ? setPartialState(path.slice(1), value, source[path[0]]) : value;
-      return clone(source, target);
-    }
-    return value;
-  }
-
-  function getPartialState(path, source) {
-    var i = 0;
-    while (i < path.length) {
-      source = source[path[i++]];
-    }
-    return source;
-  }
-
-  function wireStateToActions(path, state, actions) {
-    for (var key in actions) {
-      typeof actions[key] === "function" ? function (key, action) {
-        actions[key] = function (data) {
-          var result = action(data);
-
-          if (typeof result === "function") {
-            result = result(getPartialState(path, globalState), actions);
-          }
-
-          if (result && result !== (state = getPartialState(path, globalState)) && !result.then // !isPromise
-          ) {
-              scheduleRender(globalState = setPartialState(path, clone(state, result), globalState));
-            }
-
-          return result;
-        };
-      }(key, actions[key]) : wireStateToActions(path.concat(key), state[key] = clone(state[key]), actions[key] = clone(actions[key]));
-    }
-
-    return actions;
-  }
-
-  function getKey(node) {
-    return node ? node.key : null;
-  }
-
-  function eventListener(event) {
-    return event.currentTarget.events[event.type](event);
-  }
-
-  function updateAttribute(element, name, value, oldValue, isSvg) {
-    if (name === "key") {} else if (name === "style") {
-      for (var i in clone(oldValue, value)) {
-        var style = value == null || value[i] == null ? "" : value[i];
-        if (i[0] === "-") {
-          element[name].setProperty(i, style);
-        } else {
-          element[name][i] = style;
-        }
-      }
-    } else {
-      if (name[0] === "o" && name[1] === "n") {
-        name = name.slice(2);
-
-        if (element.events) {
-          if (!oldValue) oldValue = element.events[name];
-        } else {
-          element.events = {};
-        }
-
-        element.events[name] = value;
-
-        if (value) {
-          if (!oldValue) {
-            element.addEventListener(name, eventListener);
-          }
-        } else {
-          element.removeEventListener(name, eventListener);
-        }
-      } else if (name in element && name !== "list" && !isSvg) {
-        element[name] = value == null ? "" : value;
-      } else if (value != null && value !== false) {
-        element.setAttribute(name, value);
-      }
-
-      if (value == null || value === false) {
-        element.removeAttribute(name);
-      }
-    }
-  }
-
-  function createElement(node, isSvg) {
-    var element = typeof node === "string" || typeof node === "number" ? document.createTextNode(node) : (isSvg = isSvg || node.nodeName === "svg") ? document.createElementNS("http://www.w3.org/2000/svg", node.nodeName) : document.createElement(node.nodeName);
-
-    var attributes = node.attributes;
-    if (attributes) {
-      if (attributes.oncreate) {
-        lifecycle.push(function () {
-          attributes.oncreate(element);
-        });
-      }
-
-      for (var i = 0; i < node.children.length; i++) {
-        element.appendChild(createElement(node.children[i] = resolveNode(node.children[i]), isSvg));
-      }
-
-      for (var name in attributes) {
-        updateAttribute(element, name, attributes[name], null, isSvg);
-      }
-    }
-
-    return element;
-  }
-
-  function updateElement(element, oldAttributes, attributes, isSvg) {
-    for (var name in clone(oldAttributes, attributes)) {
-      if (attributes[name] !== (name === "value" || name === "checked" ? element[name] : oldAttributes[name])) {
-        updateAttribute(element, name, attributes[name], oldAttributes[name], isSvg);
-      }
-    }
-
-    var cb = isRecycling ? attributes.oncreate : attributes.onupdate;
-    if (cb) {
-      lifecycle.push(function () {
-        cb(element, oldAttributes);
-      });
-    }
-  }
-
-  function removeChildren(element, node) {
-    var attributes = node.attributes;
-    if (attributes) {
-      for (var i = 0; i < node.children.length; i++) {
-        removeChildren(element.childNodes[i], node.children[i]);
-      }
-
-      if (attributes.ondestroy) {
-        attributes.ondestroy(element);
-      }
-    }
-    return element;
-  }
-
-  function removeElement(parent, element, node) {
-    function done() {
-      parent.removeChild(removeChildren(element, node));
-    }
-
-    var cb = node.attributes && node.attributes.onremove;
-    if (cb) {
-      cb(element, done);
-    } else {
-      done();
-    }
-  }
-
-  function patch(parent, element, oldNode, node, isSvg) {
-    if (node === oldNode) {} else if (oldNode == null || oldNode.nodeName !== node.nodeName) {
-      var newElement = createElement(node, isSvg);
-      parent.insertBefore(newElement, element);
-
-      if (oldNode != null) {
-        removeElement(parent, element, oldNode);
-      }
-
-      element = newElement;
-    } else if (oldNode.nodeName == null) {
-      element.nodeValue = node;
-    } else {
-      updateElement(element, oldNode.attributes, node.attributes, isSvg = isSvg || node.nodeName === "svg");
-
-      var oldKeyed = {};
-      var newKeyed = {};
-      var oldElements = [];
-      var oldChildren = oldNode.children;
-      var children = node.children;
-
-      for (var i = 0; i < oldChildren.length; i++) {
-        oldElements[i] = element.childNodes[i];
-
-        var oldKey = getKey(oldChildren[i]);
-        if (oldKey != null) {
-          oldKeyed[oldKey] = [oldElements[i], oldChildren[i]];
-        }
-      }
-
-      var i = 0;
-      var k = 0;
-
-      while (k < children.length) {
-        var oldKey = getKey(oldChildren[i]);
-        var newKey = getKey(children[k] = resolveNode(children[k]));
-
-        if (newKeyed[oldKey]) {
-          i++;
-          continue;
-        }
-
-        if (newKey != null && newKey === getKey(oldChildren[i + 1])) {
-          if (oldKey == null) {
-            removeElement(element, oldElements[i], oldChildren[i]);
-          }
-          i++;
-          continue;
-        }
-
-        if (newKey == null || isRecycling) {
-          if (oldKey == null) {
-            patch(element, oldElements[i], oldChildren[i], children[k], isSvg);
-            k++;
-          }
-          i++;
-        } else {
-          var keyedNode = oldKeyed[newKey] || [];
-
-          if (oldKey === newKey) {
-            patch(element, keyedNode[0], keyedNode[1], children[k], isSvg);
-            i++;
-          } else if (keyedNode[0]) {
-            patch(element, element.insertBefore(keyedNode[0], oldElements[i]), keyedNode[1], children[k], isSvg);
-          } else {
-            patch(element, oldElements[i], null, children[k], isSvg);
-          }
-
-          newKeyed[newKey] = children[k];
-          k++;
-        }
-      }
-
-      while (i < oldChildren.length) {
-        if (getKey(oldChildren[i]) == null) {
-          removeElement(element, oldElements[i], oldChildren[i]);
-        }
-        i++;
-      }
-
-      for (var i in oldKeyed) {
-        if (!newKeyed[i]) {
-          removeElement(element, oldKeyed[i][0], oldKeyed[i][1]);
-        }
-      }
-    }
-    return element;
-  }
-}
-},{}],"Focm":[function(require,module,exports) {
+exports.default = function () {
+  return function (state, actions) {
+    return (0, _hyperapp.h)(
+      "main",
+      { oncreate: actions.users.get },
+      (0, _hyperapp.h)(
+        "h1",
+        null,
+        "users"
+      ),
+      (0, _hyperapp.h)(
+        "table",
+        { border: "1", style: { width: "30rem" } },
+        (0, _hyperapp.h)(
+          "tr",
+          null,
+          (0, _hyperapp.h)(
+            "th",
+            null,
+            "id"
+          ),
+          (0, _hyperapp.h)(
+            "th",
+            null,
+            "\u540D\u524D"
+          ),
+          (0, _hyperapp.h)(
+            "th",
+            null,
+            "\u6027\u5225"
+          ),
+          (0, _hyperapp.h)(
+            "th",
+            null,
+            "action"
+          )
+        ),
+        state.users.nodes.map(function (user, index) {
+          return (0, _hyperapp.h)(
+            "tr",
+            { key: index },
+            (0, _hyperapp.h)(
+              "td",
+              null,
+              (0, _hyperapp.h)(
+                _router.Link,
+                { to: "/users/" + user.id },
+                user.id
+              )
+            ),
+            (0, _hyperapp.h)(
+              "td",
+              null,
+              user.name
+            ),
+            (0, _hyperapp.h)(
+              "td",
+              null,
+              user.genderCode == "1" ? "男性" : "女性"
+            ),
+            (0, _hyperapp.h)(
+              "td",
+              null,
+              (0, _hyperapp.h)(
+                "button",
+                { onclick: function onclick() {
+                    return actions.users.remove(user.id);
+                  } },
+                "\u524A\u9664"
+              )
+            )
+          );
+        })
+      )
+    );
+  };
+};
+},{"babel-runtime/regenerator":"aIIw","hyperapp":"/xJO","@hyperapp/router":"z3Fd"}],"q1NK":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.main = undefined;
+exports.actions = exports.state = undefined;
 
 var _regenerator = require("babel-runtime/regenerator");
 
@@ -1229,49 +1687,193 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+var host = "https://mock-server-yznxmkzmvo.now.sh" || "http://localhost:3000";
 
-var state = {
-  input: {
-    name: "",
-    genderCode: "1"
-  },
-  users: []
+var state = exports.state = {
+  data: null
 };
 
-var actions = {
-  onInput: function onInput(e) {
-    return function (state) {
-      var name = e.target.name;
-      var value = e.target.value;
-
-      return {
-        input: Object.assign({}, state.input, _defineProperty({}, name, value))
-      };
-    };
-  },
-
-  resetInput: function resetInput() {
-    return function (state) {
-      return {
-        input: {
-          name: "",
-          genderCode: "1"
-        }
-      };
-    };
-  },
-
-  save: function save() {
+var actions = exports.actions = {
+  get: function get(id) {
     return function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(state) {
-        var response;
+      var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(_, actions) {
+        var response, result;
         return _regenerator2.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return fetch("http://localhost:3000/users", {
+                return fetch(host + "/users/" + id);
+
+              case 2:
+                response = _context.sent;
+
+                if (response.ok) {
+                  _context.next = 5;
+                  break;
+                }
+
+                return _context.abrupt("return", alert("通信エラー"));
+
+              case 5:
+                _context.next = 7;
+                return response.json();
+
+              case 7:
+                result = _context.sent;
+
+
+                actions.set(result);
+
+              case 9:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, _this);
+      }));
+
+      return function (_x, _x2) {
+        return _ref.apply(this, arguments);
+      };
+    }();
+  },
+
+  set: function set(user) {
+    return function () {
+      return { data: user };
+    };
+  }
+};
+
+exports.default = function (_ref2) {
+  var match = _ref2.match;
+  return function (state, actions) {
+    return (0, _hyperapp.h)(
+      "main",
+      { oncreate: function oncreate() {
+          return actions.user.get(match.params.userId);
+        } },
+      (0, _hyperapp.h)(
+        "h1",
+        null,
+        "user"
+      ),
+      state.user.data ? (0, _hyperapp.h)(
+        "table",
+        { border: "1", style: { width: "30rem" } },
+        (0, _hyperapp.h)(
+          "tr",
+          null,
+          (0, _hyperapp.h)(
+            "th",
+            null,
+            "id"
+          ),
+          (0, _hyperapp.h)(
+            "th",
+            null,
+            "\u540D\u524D"
+          ),
+          (0, _hyperapp.h)(
+            "th",
+            null,
+            "\u6027\u5225"
+          )
+        ),
+        (0, _hyperapp.h)(
+          "tr",
+          null,
+          (0, _hyperapp.h)(
+            "td",
+            null,
+            state.user.data.id
+          ),
+          (0, _hyperapp.h)(
+            "td",
+            null,
+            state.user.data.name
+          ),
+          (0, _hyperapp.h)(
+            "td",
+            null,
+            state.user.data.genderCode == "1" ? "男性" : "女性"
+          )
+        )
+      ) : null
+    );
+  };
+};
+},{"babel-runtime/regenerator":"aIIw","hyperapp":"/xJO"}],"C28z":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.actions = exports.state = undefined;
+
+var _regenerator = require("babel-runtime/regenerator");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _this = undefined;
+
+var _hyperapp = require("hyperapp");
+
+var _router = require("@hyperapp/router");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var host = "https://mock-server-yznxmkzmvo.now.sh" || "http://localhost:3000";
+
+var state = exports.state = {
+  input: {
+    name: "",
+    genderCode: "1"
+  },
+  redirectToId: null
+};
+
+var actions = exports.actions = {
+  onInput: function onInput(e) {
+    return function (state) {
+      return {
+        input: Object.assign({}, state.input, _defineProperty({}, e.target.name, e.target.value))
+      };
+    };
+  },
+  resetInput: function resetInput() {
+    return function () {
+      return {
+        input: {
+          name: "",
+          genderCode: "1"
+        },
+        redirectToId: null
+      };
+    };
+  },
+  redirectToId: function redirectToId(id) {
+    return function () {
+      return {
+        redirectToId: id
+      };
+    };
+  },
+  save: function save() {
+    return function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(state, actions) {
+        var response, result;
+        return _regenerator2.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return fetch(host + "/users", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json"
@@ -1290,13 +1892,16 @@ var actions = {
                 return _context.abrupt("return", alert("登録に失敗しました"));
 
               case 5:
-
-                // 入力をリセット
-                main.resetInput();
-                // リストを再取得
-                main.getUsers();
+                _context.next = 7;
+                return response.json();
 
               case 7:
+                result = _context.sent;
+
+
+                actions.redirectToId(result.id);
+
+              case 9:
               case "end":
                 return _context.stop();
             }
@@ -1304,223 +1909,159 @@ var actions = {
         }, _callee, _this);
       }));
 
-      return function (_x) {
+      return function (_x, _x2) {
         return _ref.apply(this, arguments);
       };
     }();
-  },
-
-  remove: function remove(id) {
-    return _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
-      var response;
-      return _regenerator2.default.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              _context2.next = 2;
-              return fetch("http://localhost:3000/users/" + id, {
-                method: "DELETE",
-                headers: {
-                  "Content-Type": "application/json"
-                }
-              });
-
-            case 2:
-              response = _context2.sent;
-
-              if (response.ok) {
-                _context2.next = 5;
-                break;
-              }
-
-              return _context2.abrupt("return", alert("削除に失敗しました"));
-
-            case 5:
-
-              // リストを再取得
-              main.getUsers();
-
-            case 6:
-            case "end":
-              return _context2.stop();
-          }
-        }
-      }, _callee2, _this);
-    }));
-  },
-
-  getUsers: function getUsers() {
-    return _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
-      var response, result;
-      return _regenerator2.default.wrap(function _callee3$(_context3) {
-        while (1) {
-          switch (_context3.prev = _context3.next) {
-            case 0:
-              _context3.next = 2;
-              return fetch("http://localhost:3000/users");
-
-            case 2:
-              response = _context3.sent;
-
-              if (response.ok) {
-                _context3.next = 5;
-                break;
-              }
-
-              return _context3.abrupt("return", alert("通信エラー"));
-
-            case 5:
-              _context3.next = 7;
-              return response.json();
-
-            case 7:
-              result = _context3.sent;
-
-
-              main.setUsers(result);
-
-            case 9:
-            case "end":
-              return _context3.stop();
-          }
-        }
-      }, _callee3, _this);
-    }));
-  },
-
-  setUsers: function setUsers(users) {
-    return function () {
-      return { users: users };
-    };
   }
 };
 
-var view = function view(state, actions) {
+exports.default = function () {
+  return function (state, actions) {
+    if (state.createUser.redirectToId) {
+      actions.createUser.resetInput();
+      return (0, _hyperapp.h)(_router.Redirect, { to: "users/" + state.createUser.redirectToId });
+    }
+
+    return (0, _hyperapp.h)(
+      "main",
+      { oncreate: actions.createUser.resetInput },
+      (0, _hyperapp.h)(
+        "h1",
+        null,
+        "form"
+      ),
+      "\u540D\u524D:",
+      " ",
+      (0, _hyperapp.h)("input", {
+        type: "text",
+        placeholder: "name",
+        name: "name",
+        value: state.createUser.input.name,
+        oninput: actions.createUser.onInput
+      }),
+      (0, _hyperapp.h)("br", null),
+      "\u6027\u5225:",
+      " ",
+      (0, _hyperapp.h)("input", {
+        type: "radio",
+        name: "genderCode",
+        value: 1,
+        checked: state.createUser.input.genderCode == 1,
+        oninput: actions.createUser.onInput
+      }),
+      "\u7537\u6027",
+      " ",
+      (0, _hyperapp.h)("input", {
+        type: "radio",
+        name: "genderCode",
+        value: 2,
+        checked: state.createUser.input.genderCode == 2,
+        oninput: actions.createUser.onInput
+      }),
+      "\u5973\u6027",
+      (0, _hyperapp.h)("br", null),
+      (0, _hyperapp.h)("br", null),
+      (0, _hyperapp.h)(
+        "div",
+        null,
+        (0, _hyperapp.h)(
+          "button",
+          { onclick: actions.createUser.save },
+          "\u767B\u9332"
+        )
+      )
+    );
+  };
+};
+},{"babel-runtime/regenerator":"aIIw","hyperapp":"/xJO","@hyperapp/router":"z3Fd"}],"Focm":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.main = undefined;
+
+var _hyperapp = require("hyperapp");
+
+var _router = require("@hyperapp/router");
+
+var _Users = require("./components/pages/Users");
+
+var _Users2 = _interopRequireDefault(_Users);
+
+var _User = require("./components/pages/User");
+
+var _User2 = _interopRequireDefault(_User);
+
+var _CreateUser = require("./components/pages/CreateUser");
+
+var _CreateUser2 = _interopRequireDefault(_CreateUser);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var state = {
+  users: _Users.state,
+  user: _User.state,
+  createUser: _CreateUser.state,
+  location: _router.location.state
+};
+
+var actions = {
+  users: _Users.actions,
+  user: _User.actions,
+  createUser: _CreateUser.actions,
+  location: _router.location.actions
+};
+
+var view = function view() {
   return (0, _hyperapp.h)(
-    "main",
+    "div",
     null,
     (0, _hyperapp.h)(
       "h3",
       null,
-      "hyper-app | 003-form"
+      "hyper-app | 005-router_bundle"
     ),
-    (0, _hyperapp.h)("br", null),
     (0, _hyperapp.h)(
-      "h3",
-      null,
-      "form"
-    ),
-    "\u540D\u524D:",
-    " ",
-    (0, _hyperapp.h)("input", {
-      type: "text",
-      placeholder: "name",
-      name: "name",
-      oninput: actions.onInput
-    }),
-    (0, _hyperapp.h)("br", null),
-    "\u6027\u5225:",
-    " ",
-    (0, _hyperapp.h)("input", {
-      type: "radio",
-      name: "genderCode",
-      value: 1,
-      checked: state.input.genderCode == 1,
-      oninput: actions.onInput
-    }),
-    "\u7537\u6027",
-    " ",
-    (0, _hyperapp.h)("input", {
-      type: "radio",
-      name: "genderCode",
-      value: 2,
-      checked: state.input.genderCode == 2,
-      oninput: actions.onInput
-    }),
-    "\u5973\u6027",
-    (0, _hyperapp.h)("br", null),
-    (0, _hyperapp.h)("br", null),
-    (0, _hyperapp.h)(
-      "div",
+      "ul",
       null,
       (0, _hyperapp.h)(
-        "button",
-        { onclick: actions.save },
-        "\u767B\u9332"
-      )
-    ),
-    (0, _hyperapp.h)("br", null),
-    (0, _hyperapp.h)(
-      "h3",
-      null,
-      "users"
-    ),
-    (0, _hyperapp.h)(
-      "table",
-      { border: "1", style: { width: "30rem" } },
-      (0, _hyperapp.h)(
-        "tr",
+        "li",
         null,
         (0, _hyperapp.h)(
-          "th",
-          null,
-          "id"
-        ),
-        (0, _hyperapp.h)(
-          "th",
-          null,
-          "\u540D\u524D"
-        ),
-        (0, _hyperapp.h)(
-          "th",
-          null,
-          "\u6027\u5225"
-        ),
-        (0, _hyperapp.h)(
-          "th",
-          null,
-          "action"
+          _router.Link,
+          { to: "/users" },
+          "Users"
         )
       ),
-      state.users.map(function (user, index) {
-        return (0, _hyperapp.h)(
-          "tr",
-          { key: index },
-          (0, _hyperapp.h)(
-            "td",
-            null,
-            user.id
-          ),
-          (0, _hyperapp.h)(
-            "td",
-            null,
-            user.name
-          ),
-          (0, _hyperapp.h)(
-            "td",
-            null,
-            user.genderCode == "1" ? "男性" : "女性"
-          ),
-          (0, _hyperapp.h)(
-            "td",
-            null,
-            (0, _hyperapp.h)(
-              "button",
-              { onclick: function onclick() {
-                  return actions.remove(user.id);
-                } },
-              "\u524A\u9664"
-            )
-          )
-        );
-      })
+      (0, _hyperapp.h)(
+        "li",
+        null,
+        (0, _hyperapp.h)(
+          _router.Link,
+          { to: "/createUser" },
+          "CreateUser"
+        )
+      )
+    ),
+    (0, _hyperapp.h)("hr", null),
+    (0, _hyperapp.h)(
+      _router.Switch,
+      null,
+      (0, _hyperapp.h)(_router.Route, { path: "/", render: _Users2.default }),
+      (0, _hyperapp.h)(_router.Route, { path: "/users", render: _Users2.default }),
+      (0, _hyperapp.h)(_router.Route, { path: "/users/:userId", render: _User2.default }),
+      (0, _hyperapp.h)(_router.Route, { path: "/createUser", render: _CreateUser2.default }),
+      (0, _hyperapp.h)(_router.Route, { render: function render() {
+          return (0, _hyperapp.h)(_router.Redirect, { to: "/users" });
+        } })
     )
   );
 };
 
 var main = exports.main = (0, _hyperapp.app)(state, actions, view, document.body);
 
-// 表示の際にfetchする
-main.getUsers();
-},{"babel-runtime/regenerator":"aIIw","hyperapp":"/xJO"}]},{},["Focm"], null)
-//# sourceMappingURL=/src.c14076b3.map
+_router.location.subscribe(main.location);
+},{"hyperapp":"/xJO","@hyperapp/router":"z3Fd","./components/pages/Users":"MEvW","./components/pages/User":"q1NK","./components/pages/CreateUser":"C28z"}]},{},["Focm"], null)
+//# sourceMappingURL=/src.ad238f94.map
