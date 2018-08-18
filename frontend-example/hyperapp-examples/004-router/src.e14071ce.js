@@ -2040,7 +2040,7 @@ var view = function view() {
       )
     ),
     (0, _hyperapp.h)("hr", null),
-    (0, _hyperapp.h)(_router.Route, { path: "", render: _Page2.default }),
+    (0, _hyperapp.h)(_router.Route, { path: "/", render: _Page2.default }),
     (0, _hyperapp.h)(_router.Route, { path: "/users", render: _Page2.default }),
     (0, _hyperapp.h)(_router.Route, { path: "/users/:userId", render: _Page4.default }),
     (0, _hyperapp.h)(_router.Route, { path: "/createUser", render: _Page6.default })
@@ -2079,7 +2079,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '59231' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '62585' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
