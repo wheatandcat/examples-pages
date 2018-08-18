@@ -1483,6 +1483,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+var host = undefined || "http://localhost:3000";
+
 exports.default = {
   createUser: {
     onInput: function onInput(e) {
@@ -1522,7 +1524,7 @@ exports.default = {
               switch (_context.prev = _context.next) {
                 case 0:
                   _context.next = 2;
-                  return fetch("http://localhost:3000/users", {
+                  return fetch(host + "/users", {
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json"
@@ -1575,7 +1577,7 @@ exports.default = {
               switch (_context2.prev = _context2.next) {
                 case 0:
                   _context2.next = 2;
-                  return fetch("http://localhost:3000/users/" + id, {
+                  return fetch(host + "/users/" + id, {
                     method: "DELETE",
                     headers: {
                       "Content-Type": "application/json"
@@ -1620,7 +1622,7 @@ exports.default = {
               switch (_context3.prev = _context3.next) {
                 case 0:
                   _context3.next = 2;
-                  return fetch("http://localhost:3000/users");
+                  return fetch(host + "/users");
 
                 case 2:
                   response = _context3.sent;
@@ -1673,7 +1675,7 @@ exports.default = {
               switch (_context4.prev = _context4.next) {
                 case 0:
                   _context4.next = 2;
-                  return fetch("http://localhost:3000/users/" + id);
+                  return fetch(host + "/users/" + id);
 
                 case 2:
                   response = _context4.sent;
@@ -2038,7 +2040,7 @@ var view = function view() {
       )
     ),
     (0, _hyperapp.h)("hr", null),
-    (0, _hyperapp.h)(_router.Route, { path: "/", render: _Page2.default }),
+    (0, _hyperapp.h)(_router.Route, { path: "", render: _Page2.default }),
     (0, _hyperapp.h)(_router.Route, { path: "/users", render: _Page2.default }),
     (0, _hyperapp.h)(_router.Route, { path: "/users/:userId", render: _Page4.default }),
     (0, _hyperapp.h)(_router.Route, { path: "/createUser", render: _Page6.default })
@@ -2077,7 +2079,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '58074' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '59231' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
