@@ -369,7 +369,7 @@ var App = function (_Component) {
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.state = {
       input: {
         name: "",
-        genderCode: 1
+        genderCode: "1"
       },
       users: []
     }, _this.getUsers = function () {
@@ -408,7 +408,7 @@ var App = function (_Component) {
       _this.setState({
         input: {
           name: "",
-          genderCode: 1
+          genderCode: "1"
         }
       });
     }, _this.onSave = function () {
@@ -496,8 +496,8 @@ var App = function (_Component) {
       Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])("input", {
         type: "radio",
         name: "genderCode",
-        value: 1,
-        checked: this.state.input.genderCode == 1,
+        value: "1",
+        checked: this.state.input.genderCode === "1",
         onChange: this.onInput
       }),
       "\u7537\u6027",
@@ -505,8 +505,8 @@ var App = function (_Component) {
       Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])("input", {
         type: "radio",
         name: "genderCode",
-        value: 2,
-        checked: this.state.input.genderCode == 2,
+        value: "2",
+        checked: this.state.input.genderCode === "2",
         onChange: this.onInput
       }),
       "\u5973\u6027",

@@ -870,7 +870,7 @@ var CreateUser__default = function (_Component) {
     return _ret = (_temp = (_this = CreateUser__possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.state = {
       input: {
         name: "",
-        genderCode: 1
+        genderCode: "1"
       }
     }, _this.onInput = function (e) {
       var _extends2;
@@ -936,8 +936,8 @@ var CreateUser__default = function (_Component) {
       Object(preact_min["h"])("input", {
         type: "radio",
         name: "genderCode",
-        value: 1,
-        checked: this.state.input.genderCode == 1,
+        value: "1",
+        checked: this.state.input.genderCode === "1",
         onChange: this.onInput
       }),
       "\u7537\u6027",
@@ -945,8 +945,8 @@ var CreateUser__default = function (_Component) {
       Object(preact_min["h"])("input", {
         type: "radio",
         name: "genderCode",
-        value: 2,
-        checked: this.state.input.genderCode == 2,
+        value: "2",
+        checked: this.state.input.genderCode === "2",
         onChange: this.onInput
       }),
       "\u5973\u6027",
